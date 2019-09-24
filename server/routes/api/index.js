@@ -4,7 +4,7 @@ var router=express.Router();
    res.send('api');
 });*/
 
-var customersRouter=require('./customers');
+var customersRouter=require('./customer');
 
-router.use('/customers',customersRouter);
+router.use('/customer',customersRouter);
 module.exports=router;

@@ -14,6 +14,7 @@ class Customer extends Component {
       </TableRow>
     );
   }
+  
 }
 
 export default Customer;

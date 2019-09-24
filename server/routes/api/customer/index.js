@@ -4,21 +4,21 @@ var customers = [
     {
         id: 1,
         name: "들짐승",
-        birthday: "112345",
+        birthday: "111",
         gender: "남자",
         job: "회사원"
     },
     {
         id: 2,
         name: "흑두루미",
-        birthday: "112345",
+        birthday: "222",
         gender: "남자",
         job: "학생"
     },
     {
         id: 3,
         name: "흑우",
-        birthday: "112345",
+        birthday: "333",
         gender: "남자",
         job: "없음"
     }
@@ -27,7 +27,7 @@ var customers = [
 
 
 router.get('/', function (req, res, next) {
-    res.send('list of customers');
+    res.send(customers);
 });
 
 router.get('/new', function (req, res, next) {

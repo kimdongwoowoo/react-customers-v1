@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
+
 import "./App.css";
 import Customer from "./components/Customer";
 import Table from "@material-ui/core/Table";
@@ -24,10 +24,22 @@ class App extends Component {
   state = {
     customers: ''
   }
-  componentDidMout(){
-    //api는 컴포넌트가 mount된후에 호출하면된다.
-    
+  componentDidMount() {
+    //promise 방식 사용
+    this.callApi()
+      .then(res => this.setState({ customers: res }))
+      .catch(err => console.log(err));
   }
+  //async await 방식 사용
+  callApi = async () => {
+    const response = await fetch('/api/customer');
+    const body = await response.json();
+    return body;
+  }
+
+
+
+
   render() {
     const { classes } = this.props;
     return (
@@ -48,6 +60,7 @@ class App extends Component {
                 ? this.state.customers.map(c => {
                   return (
                     <Customer
+                      key={c.id}
                       id={c.id}
                       name={c.name}
                       birthday={c.birthday}
