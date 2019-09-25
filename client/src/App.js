@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import "./App.css";
 import Customer from "./components/Customer";
+import CustomerAdd from "./components/CustomerAdd";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
@@ -21,25 +22,36 @@ const styles = theme => ({
 });
 
 class App extends Component {
-  state = {
-    customers: ''
+  constructor(props) {
+    super(props);
+    this.state = {
+      customers: '',
+      completed: 0
+    }
+    this.stateRefresh = this.stateRefresh.bind(this);
+
+  }
+  //state refresh할때도 동기화 주의할것.
+  //GET으로 데이터를 갖고온 후 state를 변경해줘야함.
+  stateRefresh() {
+    this.callApi().then((body) => {
+      this.setState({ customers: body });
+    });
+
+
   }
   componentDidMount() {
-    //promise 방식 사용
-    this.callApi()
-      .then(res => this.setState({ customers: res }))
-      .catch(err => console.log(err));
+
+    this.stateRefresh();
   }
+
   //async await 방식 사용
+
   callApi = async () => {
-    const response = await fetch('/api/customer');
+    const response = await fetch('/api/customer');//fetch 자체적으로 promise 리턴
     const body = await response.json();
     return body;
   }
-
-
-
-
   render() {
     const { classes } = this.props;
     return (
@@ -52,6 +64,7 @@ class App extends Component {
               <TableCell>생일</TableCell>
               <TableCell>성별</TableCell>
               <TableCell>직업</TableCell>
+              <TableCell>설정</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -66,6 +79,7 @@ class App extends Component {
                       birthday={c.birthday}
                       gender={c.gender}
                       job={c.job}
+                      stateRefresh={this.stateRefresh}
                     ></Customer>
                   );
                 })
@@ -73,6 +87,7 @@ class App extends Component {
             }
           </TableBody>
         </Table>
+        <CustomerAdd stateRefresh={this.stateRefresh}></CustomerAdd>
       </Paper>
     );
   }
